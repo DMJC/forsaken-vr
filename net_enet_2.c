@@ -28,6 +28,14 @@
 // debug print f
 #include "util.h"
 
+#if ENET_VERSION_MAJOR >= 2
+#define ENET_HOST_CREATE(host, peers, channels, inbw, outbw) enet_host_create((host), (peers), (channels), (inbw), (outbw))
+#define ENET_HOST_CONNECT(host, addr, channels) enet_host_connect((host), (addr), (channels), 0)
+#else
+#define ENET_HOST_CREATE(host, peers, channels, inbw, outbw) enet_host_create((host), (peers), (inbw), (outbw))
+#define ENET_HOST_CONNECT(host, addr, channels) enet_host_connect((host), (addr), (channels))
+#endif
+
 // id stuff
 typedef unsigned char peer_id_t;
 #define NO_ID 0
@@ -237,7 +245,7 @@ static network_return_t enet_setup( char* str_address, int port )
 	DebugPrintf("network: enet setup address %s\n",
 		address_to_str(&address));
 
-	enet_host = enet_host_create( &address, max_peers, 0, 0 );
+	enet_host = ENET_HOST_CREATE( &address, max_peers, max_channels, 0, 0 );
 
 	if ( enet_host == NULL )
 	{
@@ -267,7 +275,7 @@ static int enet_connect( char* str_address, int port )
 	DebugPrintf("network: enet connect to address %s\n",
 		address_to_str(&address));
 
-	peer = enet_host_connect( enet_host, &address, max_channels );
+	peer = ENET_HOST_CONNECT( enet_host, &address, max_channels );
 
 	if (peer == NULL)
 	{
@@ -1311,7 +1319,7 @@ static void new_packet( ENetEvent * event )
 					network_peer_data_t * new_peer_data;
 					DebugPrintf("network: host told us to connect to player %d address %s\n",
 						packet->id, address_to_str( address ));
-					new_peer = enet_host_connect( enet_host, address, max_channels );
+					new_peer = ENET_HOST_CONNECT( enet_host, address, max_channels );
 					if(!new_peer)
 					{
 						DebugPrintf("network: enet host connect returned NULL.\n");

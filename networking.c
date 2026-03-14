@@ -36,6 +36,7 @@
 #include "net_tracker.h"
 #include "timer.h"
 #include "oct2.h"
+#include "util.h"
 
 
 BYTE WhoIAm = UNASSIGNED_SHIP;
@@ -5528,5 +5529,4 @@ bool UpdateAmmoAndValidateMessage( void * Message )
 
 	return( true );
 }
-
 

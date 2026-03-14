@@ -14,6 +14,11 @@
 #include <stdio.h>
 #include "main_sdl.h"
 #include "SDL_opengl.h"
+#if defined(MACOSX)
+#include <OpenGL/glu.h>
+#else
+#include <GL/glu.h>
+#endif
 
 extern render_info_t render_info;
 

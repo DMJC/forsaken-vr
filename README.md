@@ -18,6 +18,7 @@ cmake --build build -j
 ### Useful CMake options
 
 - `-DOPENVR=ON` to enable OpenVR support (`libopenvr` + pkg-config metadata required)
+- `-DSDL_VERSION=1|2` to select SDL 1.x (`sdl`) or SDL2 (`sdl2`) pkg-config target
 - `-DGL_VERSION=1|2|3` to select the `GL` compile-time backend macro
 - `-DPROFILE=ON|OFF` to enable/disable `-pg`
 - `-DLUA_BOT=ON|OFF`
