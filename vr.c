@@ -3,6 +3,16 @@
 
 #ifdef USE_OPENVR
 #include <openvr_capi.h>
+
+/*
+ * Some distro-provided OpenVR C headers omit declarations for the global
+ * lifecycle helpers while still exposing the interface tables and enums.
+ * Declare them here to keep C builds portable across those variants.
+ */
+extern bool VR_IsHmdPresent( void );
+extern uint32_t VR_InitInternal( EVRInitError *peError, EVRApplicationType eApplicationType );
+extern void * VR_GetGenericInterface( const char *pchInterfaceVersion, EVRInitError *peError );
+extern void VR_ShutdownInternal( void );
 #endif
 
 static bool vr_enabled = false;
