@@ -78,6 +78,9 @@ endif
 # which version of GL do you want to use ?
 GL=1
 
+# set to 1 to enable OpenVR runtime integration
+OPENVR=0
+
 $(if $(shell test "$(GL)" -ge 3 -a "$(SDL)" -lt 2 && echo fail), \
      $(error "GL >= 3 only supported with SDL >= 2"))
 
@@ -114,6 +117,11 @@ else ifeq ($(MACOSX),1)
   LIB += -framework Cocoa  # Used to target Quartz by SDL_.
 else
   LIB += -lGL -lGLU
+endif
+
+ifeq ($(OPENVR),1)
+  CFLAGS += -DUSE_OPENVR `pkg-config --cflags openvr`
+  LIB += `pkg-config $(PKG_CFG_OPTS) --libs openvr`
 endif
 ifneq ($(MINGW),1)
   # apparently on some systems -ldl is explicitly required
