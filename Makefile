@@ -67,22 +67,15 @@ endif
 LUA=$(shell pkg-config lua && echo lua || echo lua5.1)
 MACOSX=$(shell uname -a | grep -qi darwin && echo 1 || echo 0)
 
-# which version of sdl do you want to ask pkgconfig for ?
-SDL=1
-ifeq ($(SDL),1)
-  SDL_=sdl
-else
-  SDL_=sdl$(SDL)
-endif
+# always build against SDL2
+SDL=2
+SDL_=sdl2
 
 # which version of GL do you want to use ?
 GL=1
 
 # set to 1 to enable OpenVR runtime integration
 OPENVR=0
-
-$(if $(shell test "$(GL)" -ge 3 -a "$(SDL)" -lt 2 && echo fail), \
-     $(error "GL >= 3 only supported with SDL >= 2"))
 
 # library headers
 CFLAGS+= `pkg-config --cflags $(SDL_) $(LUA) $(LUA)-socket libenet libpng zlib openal`
