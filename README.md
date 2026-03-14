@@ -4,22 +4,40 @@ This repo holds the community port of Forsaken!
 
 Check out the [Wiki](https://github.com/ForsakenX/forsaken/wiki) for more information.
 
-## Virtual Reality (OpenVR)
+## Building (CMake)
 
-Forsaken now includes optional OpenVR support on SDL2 builds.
+Forsaken now uses CMake as the build system.
 
-### Build with OpenVR
+### Configure + build
 
 ```bash
-make SDL=2 OPENVR=1
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build -j
 ```
 
-This requires `libopenvr` development headers and pkg-config metadata to be installed.
+### Useful CMake options
 
-### Run in VR mode
+- `-DOPENVR=ON` to enable OpenVR support (`libopenvr` + pkg-config metadata required)
+- `-DGL_VERSION=1|2|3` to select the `GL` compile-time backend macro
+- `-DPROFILE=ON|OFF` to enable/disable `-pg`
+- `-DLUA_BOT=ON|OFF`
+- `-DRENDER_DISABLED=ON|OFF`
+- `-DINPUT_DISABLED=ON|OFF`
+- `-DDXMOUSE=ON|OFF`
+
+Example with OpenVR:
 
 ```bash
-./projectx -VR
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DOPENVR=ON
+cmake --build build -j
+```
+
+## Virtual Reality (OpenVR)
+
+Run with:
+
+```bash
+./build/projectx -VR
 ```
 
 Use `-NoVR` to explicitly disable VR initialization.
