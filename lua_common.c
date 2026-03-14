@@ -37,8 +37,10 @@
  * Avoid depending on distro-specific LuaSocket internal headers.
  * We only need the module entry points.
  */
-extern int luaopen_socket_core(lua_State *L);
-extern int luaopen_mime_core(lua_State *L);
+extern int luaopen_socket_core(lua_State *L) __attribute__((weak));
+extern int luaopen_socket(lua_State *L) __attribute__((weak));
+extern int luaopen_mime_core(lua_State *L) __attribute__((weak));
+extern int luaopen_mime(lua_State *L) __attribute__((weak));
 
 lua_State *L1;
 
@@ -135,8 +137,15 @@ int luaopen_miniupnp(lua_State *L);
 
 static void assign_loaders( void )
 {
-	assign_loader( "socket.core", luaopen_socket_core );
-	assign_loader( "mime.core", luaopen_mime_core );
+	if ( luaopen_socket_core )
+		assign_loader( "socket.core", luaopen_socket_core );
+	else if ( luaopen_socket )
+		assign_loader( "socket.core", luaopen_socket );
+
+	if ( luaopen_mime_core )
+		assign_loader( "mime.core", luaopen_mime_core );
+	else if ( luaopen_mime )
+		assign_loader( "mime.core", luaopen_mime );
 #ifdef MINIUPNP
 	assign_loader( "miniupnp", luaopen_miniupnp );
 #endif
