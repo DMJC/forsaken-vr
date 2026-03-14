@@ -39,6 +39,7 @@
 #include "networking.h"
 #include "2dtextures.h"
 #include "primary.h"
+#include "util.h"
 #include "secondary.h"
 #include "visi.h"
 #include "text.h"

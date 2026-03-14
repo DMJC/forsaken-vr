@@ -14,6 +14,7 @@
 #include <SDL.h>
 #include "input.h"
 #include "sound.h"
+#include "vr.h"
 
 #ifndef WIN32
 #include <unistd.h>
@@ -216,6 +217,16 @@ static bool ParseCommandLine(char* lpCmdLine)
 			render_info.fullscreen = false;
 		}
 
+		else if (!strcasecmp(option, "VR"))
+		{
+			vr_set_enabled( true );
+		}
+
+		else if (!strcasecmp(option, "NoVR"))
+		{
+			vr_set_enabled( false );
+		}
+
 		// turn off sound
 		else if (!strcasecmp(option, "NoSFX"))
 		{
@@ -375,6 +386,8 @@ void CleanUpAndPostQuit(void)
 	// cleanup networking
 	network_cleanup();
 
+	vr_shutdown();
+
 #ifdef SOUND_SUPPORT
 
 	// cleanup sound system
@@ -489,6 +502,12 @@ static bool AppInit( char * lpCmdLine )
 		return false;
 	}
 
+	if ( vr_is_enabled() && !vr_init( &render_info ) )
+	{
+		Msg("VR initialization failed.");
+		return false;
+	}
+
 	// appears dinput has to be after init window
 
 	// initialize direct input
@@ -542,6 +561,8 @@ static bool RenderLoop()
 {
     if ( !render_info.ok_to_render || render_info.minimized || render_info.bPaused || QuitRequested )
 		return true;
+
+	vr_update( &render_info );
 
     // Call the sample's RenderScene to render this frame
     if (!RenderScene())

@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include <time.h>
 #include <sys/timeb.h>
+#include <ctype.h>
 #include "main.h"
 #include "file.h"
 #include "util.h"
@@ -292,4 +293,3 @@ int Msg( const char * msg, ... )
 	// IDOK	OK button was selected.
 	return res;
 }
-

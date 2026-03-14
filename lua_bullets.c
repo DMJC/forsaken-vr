@@ -151,8 +151,16 @@ static int luaprimbull_index(lua_State *L)
 	FIELDPTR(ColStart, vector);
 	FIELD(ColDist, number);
 	FIELD(ColFlag, integer);
-	FIELDPTR(ColPoint, vector); /* VERT */
-	FIELDPTR(ColPointNormal, vector); /* NORMAL */
+	if (!strcmp(name, "ColPoint"))
+	{
+		lua_pushvector(L, (VECTOR *) &bullet->ColPoint);
+		return 1;
+	}
+	if (!strcmp(name, "ColPointNormal"))
+	{
+		lua_pushvector(L, (VECTOR *) &bullet->ColPointNormal);
+		return 1;
+	}
 	FIELD(ColGroup, integer);
 	FIELD(GroupImIn, integer);
 	FIELDPTR(Mat, matrix);
@@ -275,8 +283,16 @@ static int luasecbull_index(lua_State *L)
 	FIELD(ColDist, number);
 	FIELD(ColFlag, integer);
 	FIELD(ColGroup, integer);
-	FIELDPTR(ColPoint, vector); /* VERT */
-	FIELDPTR(ColPointNormal, vector); /* NORMAL */
+	if (!strcmp(name, "ColPoint"))
+	{
+		lua_pushvector(L, (VECTOR *) &bullet->ColPoint);
+		return 1;
+	}
+	if (!strcmp(name, "ColPointNormal"))
+	{
+		lua_pushvector(L, (VECTOR *) &bullet->ColPointNormal);
+		return 1;
+	}
 	FIELD(GroupImIn, integer);
 	FIELD(ModelNum, integer);
 	FIELD(ModelIndex, integer);
