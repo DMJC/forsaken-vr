@@ -28,7 +28,10 @@
 // debug print f
 #include "util.h"
 
-#if ENET_VERSION_MAJOR >= 2
+#if defined(ENET_VERSION_MAJOR) && (ENET_VERSION_MAJOR >= 2)
+#define ENET_HOST_CREATE(host, peers, channels, inbw, outbw) enet_host_create((host), (peers), (channels), (inbw), (outbw))
+#define ENET_HOST_CONNECT(host, addr, channels) enet_host_connect((host), (addr), (channels), 0)
+#elif defined(ENET_VERSION) && (ENET_VERSION >= ENET_VERSION_CREATE(1, 3, 0))
 #define ENET_HOST_CREATE(host, peers, channels, inbw, outbw) enet_host_create((host), (peers), (channels), (inbw), (outbw))
 #define ENET_HOST_CONNECT(host, addr, channels) enet_host_connect((host), (addr), (channels), 0)
 #else
@@ -769,7 +772,7 @@ static void new_connection( ENetPeer * peer )
 
 static void lost_connection( ENetPeer * peer, enet_uint32 data )
 {
-	char* reason = &data;
+	u_int8_t* reason = (u_int8_t*) &data;
 	network_peer_data_t * peer_data = peer->data;
 
 	// print debug info

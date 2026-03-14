@@ -31,9 +31,14 @@
 
 #include <stdio.h>
 #include "lua_common.h"
-#include "luasocket.h"
-#include "mime.h"
 #include "main.h"
+
+/*
+ * Avoid depending on distro-specific LuaSocket internal headers.
+ * We only need the module entry points.
+ */
+extern int luaopen_socket_core(lua_State *L);
+extern int luaopen_mime_core(lua_State *L);
 
 lua_State *L1;
 
